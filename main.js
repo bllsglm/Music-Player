@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded' , ()=>{
     }
   })
 
-  //Next Button
+  //Next Song
   const next = nextBtn.querySelector('i');
   next.addEventListener('click', ()=>{
   if(songIndex === songs.length-1){
@@ -84,11 +84,32 @@ document.addEventListener('DOMContentLoaded' , ()=>{
 
 
 
+  //Go to a certain point on Progress Bar
   const setProgress = (e) => {
-
+    const width = progressContainer.clientWidth; // Get the total width of the progress container
+    const clickX = e.offsetX;
+    const duration = audio.duration
+    const newTime = (clickX/width)*duration
+    audio.currentTime = newTime
+    
   }
 
   progressContainer.addEventListener('click' , setProgress)
+
+  //After Song Ended
+  function nextSong() {
+    if(songIndex === songs.length-1){
+      songIndex = 0
+      loadSong(songs[songIndex])
+      audio.play()
+    }else{
+      songIndex++
+      loadSong(songs[songIndex])
+      audio.play()
+    }
+  }
+
+  audio.addEventListener('ended', nextSong)
 
 })
 
