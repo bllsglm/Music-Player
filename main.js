@@ -27,53 +27,83 @@ document.addEventListener('DOMContentLoaded' , ()=>{
   }
 
 //eventListeners
-  const play = playBtn.querySelector('i')
+  const playSong = () => {
+    musicContainer.classList.toggle('play')
+    play.classList.add('fa-play')
+    play.classList.remove('fa-pause')
+    audio.pause()
+  }
 
-  //Play-Pause Button
-  play.addEventListener('click', ()=>{
-    if(play.classList.contains('fa-pause')){
-      musicContainer.classList.toggle('play')
-      play.classList.add('fa-play')
-      play.classList.remove('fa-pause')
-      audio.pause()      
-    }else{
-      musicContainer.classList.toggle('play')
-      play.classList.add('fa-pause')
-      play.classList.remove('fa-play')
-      audio.play()
-    }
-  })
-
-  //Next Song
-  const next = nextBtn.querySelector('i');
-  next.addEventListener('click', ()=>{
-  if(songIndex === songs.length-1){
-    songIndex = 0
-    loadSong(songs[songIndex])
-    audio.play()
-  }else{
-    songIndex++
-    loadSong(songs[songIndex])
+  const pauseSong = () => {
+    musicContainer.classList.toggle('play')
+    play.classList.add('fa-pause')
+    play.classList.remove('fa-play')
     audio.play()
   }
   
-  })
+  
 
-  //Prev Button
-  const prev = prevBtn.querySelector('i');
-  prev.addEventListener('click', ()=>{
-  if(songIndex === 0){
-    songIndex = songs.length -1
-    loadSong(songs[songIndex])
-    audio.play()
-  }else{
-    songIndex--
-    loadSong(songs[songIndex])
-    audio.play()
+  //Play-Pause Button
+  const startSong =(e)=>{
+    
+    if(play.classList.contains('fa-pause')){
+        playSong()
+    }else{
+        pauseSong()
+    }
   }
-  })
+  const play = playBtn.querySelector('i')
+  play.addEventListener('click', startSong)
 
-  //Progress Bar Style
+
+  //NEXT SONG
+  const nextSong = () => {
+    if(songIndex === songs.length-1){
+    songIndex = 0
+    loadSong(songs[songIndex])
+    if(play.classList.contains('fa-pause')){
+      audio.play()
+    }else{
+      audio.pause()
+    }
+  }else{
+    songIndex++
+    loadSong(songs[songIndex])
+    if(play.classList.contains('fa-pause')){
+      audio.play()
+    }else{
+      audio.pause()
+    }
+  }
+  }
+
+  nextBtn.addEventListener('click', nextSong)
+
+  //PREV SONG
+  
+  const prevSong = () => {
+    if(songIndex === 0){
+      songIndex = songs.length -1
+      loadSong(songs[songIndex])
+      if(play.classList.contains('fa-pause')){
+        audio.play()
+      }else{
+        audio.pause()
+      }
+    }else{
+      songIndex--
+      loadSong(songs[songIndex])
+      if(play.classList.contains('fa-pause')){
+        audio.play()
+      }else{
+        audio.pause()
+      }
+    }
+  }
+
+  prevBtn.addEventListener('click' , prevSong)
+
+  //PROGRESS BAR STYLE
   const updateProgress = (e) => {
     const {duration, currentTime} = e.srcElement
     const progressPercent = (currentTime / duration)*100;
@@ -84,20 +114,20 @@ document.addEventListener('DOMContentLoaded' , ()=>{
 
 
 
-  //Go to a certain point on Progress Bar
+  //GO TO A  CERTAİN POİNT IN PROGRESSBAR
   const setProgress = (e) => {
     const width = progressContainer.clientWidth; // Get the total width of the progress container
     const clickX = e.offsetX;
     const duration = audio.duration
     const newTime = (clickX/width)*duration
     audio.currentTime = newTime
-    
   }
+  
 
   progressContainer.addEventListener('click' , setProgress)
 
-  //After Song Ended
-  function nextSong() {
+  //AFTER SONG ENDED
+  function afterSong() {
     if(songIndex === songs.length-1){
       songIndex = 0
       loadSong(songs[songIndex])
@@ -109,7 +139,7 @@ document.addEventListener('DOMContentLoaded' , ()=>{
     }
   }
 
-  audio.addEventListener('ended', nextSong)
+  audio.addEventListener('ended', afterSong)
 
 })
 

@@ -9,14 +9,24 @@ body {
   height: 100vh;
   margin: 0;
   font-family: 'Lato' sans-serif;
-  background-image:  linear-gradient(
-    0deg,
-    rgb(247,247, 247) 23.8%,
-    rgb(252,221,221) 92%);
+  background:  linear-gradient(
+    -45deg,
+    #001B79,
+    #1640D6,
+    #ED5AB3,
+    #FF90C2);
+  background-size: 400% 800% ;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  animation: gradient 10s ease infinite;
+}
+
+@keyframes gradient {
+   0% { background-position: 0% 50%}
+   50% {background-position : 100% 50%}
+  100% {background-position: 0% 50%} 
 }
 
 
